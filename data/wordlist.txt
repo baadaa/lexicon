@@ -1,0 +1,17 @@
+# Lexicon word list
+# Format: word [difficulty]
+# Difficulty: 1 = familiar, 2 = advanced (default), 3 = rare
+# Lines starting with # are ignored
+
+# ── Level 1 — familiar ───────────────────────────────────────
+lucid 1
+candor 1
+
+# ── Level 2 — advanced ───────────────────────────────────────
+ephemeral 2
+liminal 2
+
+# ── Level 3 — rare ───────────────────────────────────────────
+petrichor 3
+sonder 3
+vellichor 3

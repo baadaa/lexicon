@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lexicon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ctext x='10' y='185' font-family='Georgia%2C serif' font-size='200' font-weight='400' fill='%2334a5cb' font-style='italic'%3EL%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <div id="app" role="main">
+      <!-- Home -->
+      <div id="screen-home" class="screen active">
+        <div class="top-bar">
+          <span class="wordmark">lex<span>icon</span></span>
+          <button class="htp-btn" onclick="openHTP()">How to play</button>
+          <span class="streak-pill" id="streak-pill"
+            >&#9679; <span id="streak-count">—</span></span
+          >
+        </div>
+        <div class="home-hero">
+          <div class="date-label" id="today-label"></div>
+          <div class="hero-word-row">
+            <span class="hero-word" id="hero-word">ephemeral</span>
+            <span class="difficulty-label d2" id="hero-difficulty"
+              >advanced</span
+            >
+          </div>
+          <div class="hero-pos" id="hero-pos">adjective</div>
+          <div class="hero-peek">
+            <button
+              class="hero-peek-btn"
+              id="hero-peek-btn"
+              onclick="toggleHeroPeek()"
+            >
+              <span>What does this mean?</span>
+              <span class="peek-chevron">▼</span>
+            </button>
+            <div class="hero-peek-body" id="hero-peek-body">
+              <div class="hero-peek-def" id="hero-peek-def"></div>
+              <div class="hero-peek-example" id="hero-peek-example"></div>
+            </div>
+          </div>
+        </div>
+        <div class="session-options">
+          <div class="section-label">Start a session</div>
+          <button class="session-btn" onclick="startSession('short')">
+            <div class="session-btn-header">
+              <span class="session-btn-title">Quick practice</span>
+              <span class="session-btn-badge">~2 min</span>
+            </div>
+            <div class="session-btn-desc">One word, three exercises</div>
+          </button>
+          <button class="session-btn" onclick="startSession('long')">
+            <div class="session-btn-header">
+              <span class="session-btn-title">Full session</span>
+              <span class="session-btn-badge">~10 min</span>
+            </div>
+            <div class="session-btn-desc">Three words, all exercise types</div>
+          </button>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-num" id="stat-words">0</div>
+            <div class="stat-label">words seen</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-collected">0</div>
+            <div class="stat-label">words recalled</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-streak">—</div>
+            <div class="stat-label">day streak</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exercise -->
+      <div id="screen-exercise" class="screen">
+        <div class="exercise-header">
+          <button class="back-btn" onclick="goHome()">← home</button>
+          <div class="progress-track" id="progress-track"></div>
+        </div>
+        <div class="exercise-body" id="exercise-body"></div>
+      </div>
+
+      <!-- Complete -->
+      <div id="screen-complete" class="screen">
+        <div class="top-bar">
+          <span class="wordmark">lex<span>icon</span></span>
+        </div>
+        <div class="complete-screen">
+          <div class="complete-icon">✓</div>
+          <div class="complete-title">Session complete</div>
+          <div class="complete-subtitle" id="complete-subtitle"></div>
+          <button
+            class="review-toggle"
+            id="review-toggle"
+            onclick="toggleReview()"
+          >
+            <span>Review this session</span>
+            <span class="review-toggle-chevron">▼</span>
+          </button>
+          <div class="review-list" id="review-list"></div>
+          <div class="btn-stack">
+            <button class="primary-btn" onclick="goHome()">Back to home</button>
+            <button
+              class="secondary-btn"
+              onclick="startSession(currentSessionType)"
+            >
+              Another round
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- How to play modal -->
+      <div class="modal-overlay" id="htp-overlay" onclick="closeHTP(event)">
+        <div
+          class="modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="htp-title"
+        >
+          <div class="modal-header">
+            <span class="modal-title" id="htp-title">How to play</span>
+            <button class="modal-close" onclick="closeHTP()" aria-label="Close">
+              &times;
+            </button>
+          </div>
+          <p class="modal-intro">
+            <strong>Lexicon</strong> is a daily vocabulary practice for the
+            curious. Each session introduces a handful of words through short,
+            varied exercises — no scores to chase, no streaks to protect. Get
+            something wrong and you'll simply see the right answer. Come back
+            when you feel like it.
+          </p>
+          <div class="modal-section-label">Sessions</div>
+          <div class="modal-sessions">
+            <div class="modal-session-card">
+              <div class="modal-session-name">Quick practice</div>
+              <div class="modal-session-desc">
+                One word, three exercises. Good for a two-minute break.
+              </div>
+            </div>
+            <div class="modal-session-card">
+              <div class="modal-session-name">Full session</div>
+              <div class="modal-session-desc">
+                Three words, all exercise types. About ten minutes.
+              </div>
+            </div>
+          </div>
+          <div class="modal-section-label">Exercises</div>
+          <div class="modal-exercises">
+            <div class="modal-exercise-row">
+              <span class="modal-exercise-tag">Definition</span>
+              <span class="modal-exercise-desc"
+                >Read the meaning and an example sentence.</span
+              >
+            </div>
+            <div class="modal-exercise-row">
+              <span class="modal-exercise-tag">Synonym</span>
+              <span class="modal-exercise-desc"
+                >Pick the word closest in meaning.</span
+              >
+            </div>
+            <div class="modal-exercise-row">
+              <span class="modal-exercise-tag">Antonym</span>
+              <span class="modal-exercise-desc"
+                >Pick the word opposite in meaning.</span
+              >
+            </div>
+            <div class="modal-exercise-row">
+              <span class="modal-exercise-tag">Fill in blank</span>
+              <span class="modal-exercise-desc"
+                >Type the missing word to complete the sentence.</span
+              >
+            </div>
+            <div class="modal-exercise-row">
+              <span class="modal-exercise-tag">Etymology</span>
+              <span class="modal-exercise-desc"
+                >Learn the word's origin and identify its source language.</span
+              >
+            </div>
+            <div class="modal-exercise-row">
+              <span class="modal-exercise-tag">Idiom</span>
+              <span class="modal-exercise-desc"
+                >Match a related expression to its meaning.</span
+              >
+            </div>
+          </div>
+          <p class="modal-footer">
+            Wrong answers are just part of learning. No guilt.
+          </p>
+        </div>
+      </div>
+      <footer>
+        Built by <a href="https://bald.design" target="_blank">B</a> with Claude
+        / Hosted via <a>GitHub repo</a>
+      </footer>
+    </div>
+    <script src="src/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", (event) => {
+        loadWords();
+      });
+    </script>
+  </body>
+</html>
