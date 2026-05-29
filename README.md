@@ -113,3 +113,11 @@ Each entry in `words.json` follows this structure:
 
 `difficulty`: `1` = familiar, `2` = advanced, `3` = rare  
 `idiom`: optional — can be `null` if no strong idiomatic connection exists
+
+---
+
+## Screenshots
+
+![home screen](./screenshots/home.png)
+![home screen](./screenshots/exercise-example.png)
+![home screen](./screenshots/session-review.png)
